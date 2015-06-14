@@ -135,10 +135,10 @@ namespace Champ_Proj5_ASCIITranslator
         {
             foreach (char c in userInput)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))
-                    return true;
+                if ((c < '0' || c > '9') && (c < 'a' || c > 'f'))
+                    return false;
             }
-            return false;
+            return true;
         }
     }
 }
