@@ -15,7 +15,13 @@ namespace Champ_Proj5_ASCIITranslator
                 Console.WriteLine("Please specify the input data type for console input ASCII translation (Bin, Oct, or Hex).");
                 string dataType = Console.ReadLine().ToLower();
 
-                if (dataType == "bin")
+                if (dataType != "bin" && dataType != "oct" && dataType!= "hex")
+                {
+                    Console.WriteLine("Invalid input data type.");
+                    Console.ReadLine();
+                }
+
+                else if (dataType == "bin")
                 {
                     Console.WriteLine("Enter a binary message for ASCII translation.");
                     string binString = Console.ReadLine().ToLower();
@@ -34,7 +40,7 @@ namespace Champ_Proj5_ASCIITranslator
                     Console.ReadLine();
                 }
 
-                if (dataType == "oct")
+                else if (dataType == "oct")
                 {
                     Console.WriteLine("Enter an octal message for ASCII translation.");
                     string octString = Console.ReadLine().ToLower();
@@ -53,7 +59,7 @@ namespace Champ_Proj5_ASCIITranslator
                     Console.ReadLine();
                 }
 
-                if (dataType == "hex")
+                else if (dataType == "hex")
                 {
                     Console.WriteLine("Enter a hexidecimal message for ASCII translation.");
                     string hexString = Console.ReadLine().ToLower();
