@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Champ_Proj5_ASCIITranslator
@@ -108,6 +109,20 @@ namespace Champ_Proj5_ASCIITranslator
                         Console.ReadLine();
                     }
                 }
+            }
+
+            else if (args.Length >= 1 && args.Length <= 2)
+            {
+                Console.WriteLine("This is just a test.  If you passed in the \"/f or /F\" command, you will see this message.");
+                Console.ReadLine();
+            }
+
+            else
+            {
+                Console.WriteLine("Invalid parameter input.");
+                Console.WriteLine("Rerun program with valid input parameters.");
+                Thread.Sleep(5000);
+                Environment.Exit(0);
             }
         }
 
