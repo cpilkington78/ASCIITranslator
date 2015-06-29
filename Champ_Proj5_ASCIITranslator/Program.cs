@@ -124,7 +124,7 @@ namespace Champ_Proj5_ASCIITranslator
                 if (userArgs == "/f")
                 {
                     Console.WriteLine("This is just a test.  Correct parameter was passed.");
-                    Console.WriteLine("The path provided is:  ", userPath);
+                    Console.WriteLine("The path provided is:  {0}", userPath);
                     Console.WriteLine("Press any key to exit.");
                     Console.ReadLine();
                 }
