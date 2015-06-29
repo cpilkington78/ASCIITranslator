@@ -20,7 +20,9 @@ namespace Champ_Proj5_ASCIITranslator
                 if (dataType != "bin" && dataType != "oct" && dataType!= "hex")
                 {
                     Console.WriteLine("Invalid input data type.");
-                    Console.ReadLine();
+                    Console.WriteLine("Rerun program and provide a valid input data type.");
+                    Thread.Sleep(3500);
+                    Environment.Exit(0);
                 }
 
                 else if (dataType == "bin")
@@ -48,6 +50,7 @@ namespace Champ_Proj5_ASCIITranslator
                         }
 
                         Console.WriteLine(userMessage);
+                        Console.WriteLine("Press any key to exit.");
                         Console.ReadLine();
                     }
                 }
@@ -77,6 +80,7 @@ namespace Champ_Proj5_ASCIITranslator
                         }
 
                         Console.WriteLine(userMessage);
+                        Console.WriteLine("Press any key to exit.");
                         Console.ReadLine();
                     }
                 }
@@ -106,22 +110,39 @@ namespace Champ_Proj5_ASCIITranslator
                         }
 
                         Console.WriteLine(userMessage);
+                        Console.WriteLine("Press any key to exit.");
                         Console.ReadLine();
                     }
                 }
             }
 
-            else if (args.Length >= 1 && args.Length <= 2)
+            else if (args.Length == 2)
             {
-                Console.WriteLine("This is just a test.  If you passed in the \"/f or /F\" command, you will see this message.");
-                Console.ReadLine();
+                string userArgs = args[0];
+                string userPath = args[1];
+
+                if (userArgs == "/f")
+                {
+                    Console.WriteLine("This is just a test.  Correct parameter was passed.");
+                    Console.WriteLine("The path provided is:  ", userPath);
+                    Console.WriteLine("Press any key to exit.");
+                    Console.ReadLine();
+                }
+
+                else
+                {
+                    Console.WriteLine("Invalid parameter input.  The only valid parameter is \"/F\".");
+                    Console.WriteLine("Rerun program with valid input parameters.");
+                    Thread.Sleep(3500);
+                    Environment.Exit(0);
+                }
             }
 
             else
             {
-                Console.WriteLine("Invalid parameter input.");
+                Console.WriteLine("Invalid parameter input.  Only 2 parameters are allowed, \"/F\" and a file path.");
                 Console.WriteLine("Rerun program with valid input parameters.");
-                Thread.Sleep(5000);
+                Thread.Sleep(3500);
                 Environment.Exit(0);
             }
         }
