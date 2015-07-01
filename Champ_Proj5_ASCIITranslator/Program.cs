@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,7 +22,7 @@ namespace Champ_Proj5_ASCIITranslator
                 {
                     Console.WriteLine("Invalid input data type.");
                     Console.WriteLine("Rerun program and provide a valid input data type.");
-                    Thread.Sleep(3500);
+                    Thread.Sleep(3000);
                     Environment.Exit(0);
                 }
 
@@ -33,25 +34,37 @@ namespace Champ_Proj5_ASCIITranslator
                     if (!BinaryCheck(binString))
                     {
                         Console.WriteLine("Not a valid binary message.");
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadLine();
+                        Console.WriteLine("Re-run program and enter a valid binary message.");
+                        Thread.Sleep(3000);
+                        Environment.Exit(0);
                     }
 
                     else
                     {
-                        StringBuilder userMessage = new StringBuilder();
-
-                        for (int i = 0; i < binString.Length; i += 8)
+                        if (ValidByteCheck(binString) != 0)
                         {
-                            string userBinaryString = binString.Substring(i, 8);
-                            byte binaryInput = Convert.ToByte(userBinaryString, 2);
-                            char byteResult = Convert.ToChar(binaryInput);
-                            userMessage.Append(byteResult);
+                            Console.WriteLine("Binary message not in bytes, or mutliples of 8.");
+                            Console.WriteLine("Rerun program and enter valid binary message in byte format.");
+                            Thread.Sleep(3000);
+                            Environment.Exit(0);
                         }
 
-                        Console.WriteLine(userMessage);
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadLine();
+                        else
+                        {
+                            StringBuilder userMessage = new StringBuilder();
+
+                            for (int i = 0; i < binString.Length; i += 8)
+                            {
+                                string userBinaryString = binString.Substring(i, 8);
+                                byte binaryInput = Convert.ToByte(userBinaryString, 2);
+                                char byteResult = Convert.ToChar(binaryInput);
+                                userMessage.Append(byteResult);
+                            }
+
+                            Console.WriteLine(userMessage);
+                            Console.WriteLine("Press any key to exit.");
+                            Console.ReadLine();
+                        }
                     }
                 }
 
@@ -63,25 +76,37 @@ namespace Champ_Proj5_ASCIITranslator
                     if (!OctalCheck(octString))
                     {
                         Console.WriteLine("Not a valid octal message.");
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadLine();
+                        Console.WriteLine("Rerun program and enter valid octal message.");
+                        Thread.Sleep(3000);
+                        Environment.Exit(0);
                     }
 
                     else
                     {
-                        StringBuilder userMessage = new StringBuilder();
-
-                        for (int i = 0; i < octString.Length; i += 3)
+                        if (ValidOctCheck(octString) != 0)
                         {
-                            string userOctalString = octString.Substring(i, 3);
-                            int octalInput = Convert.ToInt32(userOctalString, 8);
-                            char octalResult = Convert.ToChar(octalInput);
-                            userMessage.Append(octalResult);
+                            Console.WriteLine("Invalid Octal message.  Octal message not in multiples of 3.");
+                            Console.WriteLine("Rerun program and enter valid octal message in multiples of 3.");
+                            Thread.Sleep(3000);
+                            Environment.Exit(0);
                         }
 
-                        Console.WriteLine(userMessage);
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadLine();
+                        else
+                        {
+                            StringBuilder userMessage = new StringBuilder();
+
+                            for (int i = 0; i < octString.Length; i += 3)
+                            {
+                                string userOctalString = octString.Substring(i, 3);
+                                int octalInput = Convert.ToInt32(userOctalString, 8);
+                                char octalResult = Convert.ToChar(octalInput);
+                                userMessage.Append(octalResult);
+                            }
+
+                            Console.WriteLine(userMessage);
+                            Console.WriteLine("Press any key to exit.");
+                            Console.ReadLine();
+                        }
                     }
                 }
 
@@ -93,12 +118,21 @@ namespace Champ_Proj5_ASCIITranslator
                     if (!HexadecimalCheck(hexString))
                     {
                         Console.WriteLine("Not a valid hexadecimal message.");
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadLine();
+                        Console.WriteLine("Rerun program and enter valid hexadecimal message.");
+                        Thread.Sleep(3000);
+                        Environment.Exit(0);
                     }
 
                     else
                     {
+                        if (ValidHexCheck(hexString) != 0)
+                        {
+                            Console.WriteLine("Invalid Hexadecimal message.  Hexadecimal message not in multiples of 2.");
+                            Console.WriteLine("Rerun program and enter valid hexadecimal message in multiples of 2.");
+                            Thread.Sleep(3000);
+                            Environment.Exit(0);
+                        }
+                        
                         StringBuilder userMessage = new StringBuilder();
 
                         for (int i = 0; i < hexString.Length; i += 2)
@@ -123,17 +157,27 @@ namespace Champ_Proj5_ASCIITranslator
 
                 if (userArgs == "/f")
                 {
-                    Console.WriteLine("This is just a test.  Correct parameter was passed.");
-                    Console.WriteLine("The path provided is:  {0}", userPath);
-                    Console.WriteLine("Press any key to exit.");
-                    Console.ReadLine();
+                    if (!ReadFile(userPath, ref userPath))
+                    {
+                        Console.WriteLine("File does not exist.");
+                        Console.WriteLine("Re-run program with a valid path to a file.");
+                        Thread.Sleep(3000);
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Need to figure out how to process the files.");
+                        Console.WriteLine("Will update code once I have figured this out.");
+                        Console.WriteLine("Btw Champ, iilii  iilii");
+                        Console.ReadLine();
+                    }
                 }
 
                 else
                 {
                     Console.WriteLine("Invalid parameter input.  The only valid parameter is \"/F\".");
-                    Console.WriteLine("Rerun program with valid input parameters.");
-                    Thread.Sleep(3500);
+                    Console.WriteLine("Re-run program with valid input parameters.");
+                    Thread.Sleep(3000);
                     Environment.Exit(0);
                 }
             }
@@ -141,8 +185,8 @@ namespace Champ_Proj5_ASCIITranslator
             else
             {
                 Console.WriteLine("Invalid parameter input.  Only 2 parameters are allowed, \"/F\" and a file path.");
-                Console.WriteLine("Rerun program with valid input parameters.");
-                Thread.Sleep(3500);
+                Console.WriteLine("Re-run program with valid input parameters.");
+                Thread.Sleep(3000);
                 Environment.Exit(0);
             }
         }
@@ -175,6 +219,61 @@ namespace Champ_Proj5_ASCIITranslator
                     return false;
             }
             return true;
+        }
+
+        private static int ValidByteCheck(string binString)
+        {
+            int bitCount = 0;
+            int mod;
+
+            foreach (char c in binString)
+            {
+                bitCount += 1;
+            }
+
+            mod = bitCount % 8;
+            return mod;
+        }
+
+        private static int ValidOctCheck(string octString)
+        {
+            int octCount = 0;
+            int mod;
+
+            foreach (char c in octString)
+            {
+                octCount += 1;
+            }
+
+            mod = octCount % 3;
+            return mod;
+        }
+
+        private static int ValidHexCheck(string hexString)
+        {
+            int hexCount = 0;
+            int mod;
+
+            foreach (char c in hexString)
+            {
+                hexCount += 1;
+            }
+
+            mod = hexCount % 2;
+            return mod;
+        }
+
+        private static bool ReadFile(string strFile, ref string data)
+        {
+            if (File.Exists(strFile))
+            {
+                using (StreamReader myReader = new StreamReader(strFile))
+                {
+                    data = myReader.ReadToEnd().Replace("\r", "").Replace("\n", "");
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
