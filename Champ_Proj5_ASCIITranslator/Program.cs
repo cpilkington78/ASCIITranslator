@@ -10,7 +10,6 @@ namespace Champ_Proj5_ASCIITranslator
 {
     class Program
     {
-		//Chris Champion is now a contributor! yay.
         static void Main(string[] args)
         {
             if (args.Length == 0)
