@@ -325,9 +325,8 @@ namespace Champ_Proj5_ASCIITranslator
             if (File.Exists(strFile))
             {
                 using (StreamReader myReader = new StreamReader(strFile))
-                {
-                    int temp = myReader.Read();
-                    type = Convert.ToChar(temp);
+                {                   
+                    type = Convert.ToChar(myReader.Read());
                     data = myReader.ReadToEnd().Replace("\r", "").Replace("\n", "");
                 }
                 return true;
