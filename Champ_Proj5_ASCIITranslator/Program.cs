@@ -157,7 +157,9 @@ namespace Champ_Proj5_ASCIITranslator
 
                 if (userArgs == "/f")
                 {
-                    if (!ReadFile(userPath, ref userPath))
+                    char type = char.MinValue;
+                    string data = "";
+                    if (!ReadFile(userPath, ref type, ref data))
                     {
                         Console.WriteLine("File does not exist.");
                         Console.WriteLine("Re-run program with a valid path to a file.");
@@ -166,10 +168,65 @@ namespace Champ_Proj5_ASCIITranslator
                     }
                     else
                     {
-                        Console.WriteLine("Need to figure out how to process the files.");
-                        Console.WriteLine("Will update code once I have figured this out.");
-                        Console.WriteLine("Btw Champ, iilii  iilii");
-                        Console.ReadLine();
+                        if (type == 'b')
+                        {
+                            StringBuilder userMessage = new StringBuilder();
+
+                            for (int i = 0; i < data.Length; i += 8)
+                            {
+                                string userBinaryString = data.Substring(i, 8);
+                                byte binaryInput = Convert.ToByte(userBinaryString, 2);
+                                char byteResult = Convert.ToChar(binaryInput);
+                                userMessage.Append(byteResult);
+                            }
+
+                            Console.WriteLine(userMessage);
+                            Console.WriteLine("Press any key to exit.");
+                            Console.ReadLine();
+                        }
+
+                        else if (type == 'o')
+                        {
+                            StringBuilder userMessage = new StringBuilder();
+
+                            for (int i = 0; i < data.Length; i += 3)
+                            {
+                                string userOctalString = data.Substring(i, 3);
+                                int octalInput = Convert.ToInt32(userOctalString, 8);
+                                char octalResult = Convert.ToChar(octalInput);
+                                userMessage.Append(octalResult);
+                            }
+
+                            Console.WriteLine(userMessage);
+                            Console.WriteLine("Press any key to exit.");
+                            Console.ReadLine();
+                        }
+
+                        else if (type == 'h')
+                        {
+                            StringBuilder userMessage = new StringBuilder();
+
+                            for (int i = 0; i < data.Length; i += 2)
+                            {
+                                string userHexString = data.Substring(i, 2);
+                                int hexInput = Convert.ToInt32(userHexString, 16);
+                                char hexResult = Convert.ToChar(hexInput);
+                                userMessage.Append(hexResult);
+                            }
+
+                            Console.WriteLine(userMessage);
+                            Console.WriteLine("Press any key to exit.");
+                            Console.ReadLine();
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Invalide file type.  File type must be b, o, or h.");
+                            Console.WriteLine("Re-run the program with a valid file type.");
+                            Thread.Sleep(3000);
+                            
+                            Environment.Exit(0);
+                        }
                     }
                 }
 
@@ -263,12 +320,14 @@ namespace Champ_Proj5_ASCIITranslator
             return mod;
         }
 
-        private static bool ReadFile(string strFile, ref string data)
+        private static bool ReadFile(string strFile, ref char type, ref string data)
         {
             if (File.Exists(strFile))
             {
                 using (StreamReader myReader = new StreamReader(strFile))
                 {
+                    int temp = myReader.Read();
+                    type = Convert.ToChar(temp);
                     data = myReader.ReadToEnd().Replace("\r", "").Replace("\n", "");
                 }
                 return true;
