@@ -330,6 +330,13 @@ namespace Champ_Proj5_ASCIITranslator
                         type = Convert.ToChar(myReader.Read());
                         data = myReader.ReadToEnd().Replace("\r", "").Replace("\n", "");
                     }
+                    else
+                    {
+                        Console.WriteLine("File is blank.");
+                        Console.WriteLine("Re-run program with a valid file to convert.");
+                        Thread.Sleep(3000);
+                        Environment.Exit(0);
+                    }
                 }
                 return true;
             }
