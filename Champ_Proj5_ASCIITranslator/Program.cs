@@ -10,31 +10,52 @@ namespace Champ_Proj5_ASCIITranslator
 {
     class Program
     {
+        enum ErrorCodes
+        {
+            InvalidDataType,
+            InvalidBinary,
+            NotCompleteByte,
+            InvalidOctal,
+            NotCompleteOctal,
+            InvalidHex,
+            NotCompleteHex,
+            NoFile,
+            InvalidFileType,
+            InvalidInputParameter,
+            InvalidNumParameters,
+            BlankFile,
+            InvalidBinaryFile,
+            NotCompleteByteFile,
+            InvalidOctalFile,
+            NotCompleteOctalFile,
+            InvalidHexFile,
+            NotCompleteHexFile,
+            OK
+        }
+
         static void Main(string[] args)
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Please specify the input data type for console input ASCII translation (Bin, Oct, or Hex).");
+                Console.WriteLine("Please specify the input data type for console input ASCII translation (Bin, Oct, or Hex).\n");
                 string dataType = Console.ReadLine().ToLower();
 
                 if (dataType != "bin" && dataType != "oct" && dataType!= "hex")
                 {
-                    Console.WriteLine("Invalid input data type.");
-                    Console.WriteLine("Rerun program and provide a valid input data type.");
-                    Thread.Sleep(3000);
+                    Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidDataType));
+                    Thread.Sleep(3200);
                     Environment.Exit(0);
                 }
 
                 else if (dataType == "bin")
                 {
-                    Console.WriteLine("Enter a binary message for ASCII translation.");
+                    Console.WriteLine("\nEnter a binary message for ASCII translation.\n");
                     string binString = Console.ReadLine().ToLower();
 
                     if (!BinaryCheck(binString))
                     {
-                        Console.WriteLine("Not a valid binary message.");
-                        Console.WriteLine("Re-run program and enter a valid binary message.");
-                        Thread.Sleep(3000);
+                        Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidBinary));
+                        Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
 
@@ -42,9 +63,8 @@ namespace Champ_Proj5_ASCIITranslator
                     {
                         if (ValidByteCheck(binString) != 0)
                         {
-                            Console.WriteLine("Binary message not in bytes, or mutliples of 8.");
-                            Console.WriteLine("Rerun program and enter valid binary message in byte format.");
-                            Thread.Sleep(3000);
+                            Console.WriteLine(GetErrorMessage(ErrorCodes.NotCompleteByte));
+                            Thread.Sleep(3200);
                             Environment.Exit(0);
                         }
 
@@ -60,8 +80,8 @@ namespace Champ_Proj5_ASCIITranslator
                                 userMessage.Append(byteResult);
                             }
 
-                            Console.WriteLine(userMessage);
-                            Console.WriteLine("Press any key to exit.");
+                            Console.WriteLine("\nYour binary message translated to ASCII is:\n\n{0}", userMessage);
+                            Console.WriteLine("\nPress any key to exit.");
                             Console.ReadLine();
                         }
                     }
@@ -69,14 +89,13 @@ namespace Champ_Proj5_ASCIITranslator
 
                 else if (dataType == "oct")
                 {
-                    Console.WriteLine("Enter an octal message for ASCII translation.");
+                    Console.WriteLine("\nEnter an octal message for ASCII translation.\n");
                     string octString = Console.ReadLine().ToLower();
 
                     if (!OctalCheck(octString))
                     {
-                        Console.WriteLine("Not a valid octal message.");
-                        Console.WriteLine("Rerun program and enter valid octal message.");
-                        Thread.Sleep(3000);
+                        Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidOctal));
+                        Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
 
@@ -84,9 +103,8 @@ namespace Champ_Proj5_ASCIITranslator
                     {
                         if (ValidOctCheck(octString) != 0)
                         {
-                            Console.WriteLine("Invalid Octal message.  Octal message not in multiples of 3.");
-                            Console.WriteLine("Rerun program and enter valid octal message in multiples of 3.");
-                            Thread.Sleep(3000);
+                            Console.WriteLine(GetErrorMessage(ErrorCodes.NotCompleteOctal));
+                            Thread.Sleep(3200);
                             Environment.Exit(0);
                         }
 
@@ -102,8 +120,8 @@ namespace Champ_Proj5_ASCIITranslator
                                 userMessage.Append(octalResult);
                             }
 
-                            Console.WriteLine(userMessage);
-                            Console.WriteLine("Press any key to exit.");
+                            Console.WriteLine("\nYour octal message translated to ASCII is:\n\n{0}", userMessage);
+                            Console.WriteLine("\nPress any key to exit.");
                             Console.ReadLine();
                         }
                     }
@@ -111,14 +129,13 @@ namespace Champ_Proj5_ASCIITranslator
 
                 else if (dataType == "hex")
                 {
-                    Console.WriteLine("Enter a hexadecimal message for ASCII translation.");
+                    Console.WriteLine("\nEnter a hexadecimal message for ASCII translation.\n");
                     string hexString = Console.ReadLine().ToLower();
 
                     if (!HexadecimalCheck(hexString))
                     {
-                        Console.WriteLine("Not a valid hexadecimal message.");
-                        Console.WriteLine("Rerun program and enter valid hexadecimal message.");
-                        Thread.Sleep(3000);
+                        Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidHex));
+                        Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
 
@@ -126,9 +143,8 @@ namespace Champ_Proj5_ASCIITranslator
                     {
                         if (ValidHexCheck(hexString) != 0)
                         {
-                            Console.WriteLine("Invalid Hexadecimal message.  Hexadecimal message not in multiples of 2.");
-                            Console.WriteLine("Rerun program and enter valid hexadecimal message in multiples of 2.");
-                            Thread.Sleep(3000);
+                            Console.WriteLine(GetErrorMessage(ErrorCodes.NotCompleteHex));
+                            Thread.Sleep(3200);
                             Environment.Exit(0);
                         }
                         
@@ -142,8 +158,8 @@ namespace Champ_Proj5_ASCIITranslator
                             userMessage.Append(hexResult);
                         }
 
-                        Console.WriteLine(userMessage);
-                        Console.WriteLine("Press any key to exit.");
+                        Console.WriteLine("\nYour hexadecimal message translated to ASCII is:\n\n{0}", userMessage);
+                        Console.WriteLine("\nPress any key to exit.");
                         Console.ReadLine();
                     }
                 }
@@ -160,69 +176,124 @@ namespace Champ_Proj5_ASCIITranslator
                     string data = "";
                     if (!ReadFile(userPath, ref type, ref data))
                     {
-                        Console.WriteLine("File does not exist.");
-                        Console.WriteLine("Re-run program with a valid path to a file.");
-                        Thread.Sleep(3000);
+                        Console.WriteLine(GetErrorMessage(ErrorCodes.NoFile));
+                        Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
                     else
                     {
                         if (type == 'b')
                         {
-                            StringBuilder userMessage = new StringBuilder();
-
-                            for (int i = 0; i < data.Length; i += 8)
+                            if (!BinaryCheck(data))
                             {
-                                string userBinaryString = data.Substring(i, 8);
-                                byte binaryInput = Convert.ToByte(userBinaryString, 2);
-                                char byteResult = Convert.ToChar(binaryInput);
-                                userMessage.Append(byteResult);
+                                Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidBinaryFile));
+                                Thread.Sleep(3200);
+                                Environment.Exit(0);
                             }
 
-                            Console.WriteLine(userMessage);
-                            Console.WriteLine("Press any key to exit.");
-                            Console.ReadLine();
+                            else
+                            {
+                                if (ValidByteCheck(data) != 0)
+                                {
+                                    Console.WriteLine(GetErrorMessage(ErrorCodes.NotCompleteByteFile));
+                                    Thread.Sleep(3200);
+                                    Environment.Exit(0);
+                                }
+
+                                else
+                                {
+                                    StringBuilder userMessage = new StringBuilder();
+
+                                    for (int i = 0; i < data.Length; i += 8)
+                                    {
+                                        string userBinaryString = data.Substring(i, 8);
+                                        byte binaryInput = Convert.ToByte(userBinaryString, 2);
+                                        char byteResult = Convert.ToChar(binaryInput);
+                                        userMessage.Append(byteResult);
+                                    }
+
+                                    Console.WriteLine("\nYour binary message translated to ASCII is:\n\n{0}", userMessage);
+                                    Console.WriteLine("\nPress any key to exit.");
+                                    Console.ReadLine();
+                                }
+                            }
                         }
 
                         else if (type == 'o')
                         {
-                            StringBuilder userMessage = new StringBuilder();
-
-                            for (int i = 0; i < data.Length; i += 3)
+                            if (!OctalCheck(data))
                             {
-                                string userOctalString = data.Substring(i, 3);
-                                int octalInput = Convert.ToInt32(userOctalString, 8);
-                                char octalResult = Convert.ToChar(octalInput);
-                                userMessage.Append(octalResult);
+                                Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidOctal));
+                                Thread.Sleep(3200);
+                                Environment.Exit(0);
                             }
 
-                            Console.WriteLine(userMessage);
-                            Console.WriteLine("Press any key to exit.");
-                            Console.ReadLine();
+                            else
+                            {
+                                if (ValidOctCheck(data) != 0)
+                                {
+                                    Console.WriteLine(GetErrorMessage(ErrorCodes.NotCompleteOctal));
+                                    Thread.Sleep(3200);
+                                    Environment.Exit(0);
+                                }
+
+                                else
+                                {
+                                    StringBuilder userMessage = new StringBuilder();
+
+                                    for (int i = 0; i < data.Length; i += 3)
+                                    {
+                                        string userOctalString = data.Substring(i, 3);
+                                        int octalInput = Convert.ToInt32(userOctalString, 8);
+                                        char octalResult = Convert.ToChar(octalInput);
+                                        userMessage.Append(octalResult);
+                                    }
+
+                                    Console.WriteLine("\nYour octal message translated to ASCII is:\n\n{0}", userMessage);
+                                    Console.WriteLine("\nPress any key to exit.");
+                                    Console.ReadLine();
+                                }
+                            }
                         }
 
                         else if (type == 'h')
                         {
-                            StringBuilder userMessage = new StringBuilder();
-
-                            for (int i = 0; i < data.Length; i += 2)
+                            if (!HexadecimalCheck(data))
                             {
-                                string userHexString = data.Substring(i, 2);
-                                int hexInput = Convert.ToInt32(userHexString, 16);
-                                char hexResult = Convert.ToChar(hexInput);
-                                userMessage.Append(hexResult);
+                                Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidHex));
+                                Thread.Sleep(3200);
+                                Environment.Exit(0);
                             }
 
-                            Console.WriteLine(userMessage);
-                            Console.WriteLine("Press any key to exit.");
-                            Console.ReadLine();
+                            else
+                            {
+                                if (ValidHexCheck(data) != 0)
+                                {
+                                    Console.WriteLine(GetErrorMessage(ErrorCodes.NotCompleteHex));
+                                    Thread.Sleep(3200);
+                                    Environment.Exit(0);
+                                }
+
+                                StringBuilder userMessage = new StringBuilder();
+
+                                for (int i = 0; i < data.Length; i += 2)
+                                {
+                                    string userHexString = data.Substring(i, 2);
+                                    int hexInput = Convert.ToInt32(userHexString, 16);
+                                    char hexResult = Convert.ToChar(hexInput);
+                                    userMessage.Append(hexResult);
+                                }
+
+                                Console.WriteLine("\nYour hexadecimal message translated to ASCII is:\n\n{0}", userMessage);
+                                Console.WriteLine("\nPress any key to exit.");
+                                Console.ReadLine();
+                            }
                         }
 
                         else
                         {
-                            Console.WriteLine("Invalide file type.  File type must be b, o, or h.");
-                            Console.WriteLine("Re-run the program with a valid file type.");
-                            Thread.Sleep(3000);
+                            Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidFileType));
+                            Thread.Sleep(3200);
                             
                             Environment.Exit(0);
                         }
@@ -231,18 +302,16 @@ namespace Champ_Proj5_ASCIITranslator
 
                 else
                 {
-                    Console.WriteLine("Invalid parameter input.  The only valid parameter is \"/F\".");
-                    Console.WriteLine("Re-run program with valid input parameters.");
-                    Thread.Sleep(3000);
+                    Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidInputParameter));
+                    Thread.Sleep(3200);
                     Environment.Exit(0);
                 }
             }
 
             else
             {
-                Console.WriteLine("Invalid parameter input.  Only 2 parameters are allowed, \"/F\" and a file path.");
-                Console.WriteLine("Re-run program with valid input parameters.");
-                Thread.Sleep(3000);
+                Console.WriteLine(GetErrorMessage(ErrorCodes.InvalidNumParameters));
+                Thread.Sleep(3200);
                 Environment.Exit(0);
             }
         }
@@ -332,15 +401,59 @@ namespace Champ_Proj5_ASCIITranslator
                     }
                     else
                     {
-                        Console.WriteLine("File is blank.");
-                        Console.WriteLine("Re-run program with a valid file to convert.");
-                        Thread.Sleep(3000);
+                        Console.WriteLine(GetErrorMessage(ErrorCodes.BlankFile));
+                        Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
                 }
                 return true;
             }
             return false;
+        }
+
+        private static string GetErrorMessage(ErrorCodes err)
+        {
+            switch (err)
+            {
+                case ErrorCodes.InvalidDataType:
+                    return "\nInvalid input data type.\nRe-run program and provide a valid input data type.";
+                case ErrorCodes.InvalidBinary:
+                    return "\nInvalid binary message.\nRe-run program and enter a valid binary message.";
+                case ErrorCodes.NotCompleteByte:
+                    return "\nInvalid message.  Binary units must be in bytes, or mutliples of 8.\nRe-run program and enter valid binary message in byte format.";
+                case ErrorCodes.InvalidOctal:
+                    return "\nInvalid octal message.\nRe-run program and enter a valid octal message.";
+                case ErrorCodes.NotCompleteOctal:
+                    return "\nInvalid message.  Octal units must be in multiples of 3.\nRe-run program and enter valid octal message with units in multiples of 3.";
+                case ErrorCodes.InvalidHex:
+                    return "\nInvalid hexadecimal message.\nRe-run program and enter a valid hexadecimal message.";
+                case ErrorCodes.NotCompleteHex:
+                    return "\nInvalid message.  Hexadecimal units must be in multiples of 2.\nRe-run program and enter valid hexadecimal message with units in multiples of 2.";
+                case ErrorCodes.NoFile:
+                    return "\nFile does not exist.\nRe-run program with a valid path to a file.";
+                case ErrorCodes.InvalidFileType:
+                    return "\nInvalide file type.  File type must be b, o, or h.\nRe-run the program with a valid file type.";
+                case ErrorCodes.InvalidInputParameter:
+                    return "\nInvalid parameter input.  The only valid parameter is \"/F\".\nRe-run program with valid input parameters.";
+                case ErrorCodes.InvalidNumParameters:
+                    return "\nInvalid parameter input.  Only 2 parameters are allowed, \"/F\" and a file path.\nRe-run program with valid input parameters.";
+                case ErrorCodes.BlankFile:
+                    return "\nInvalid text file.  File is blank.\nRe-run program with a valid file to translate.";
+                case ErrorCodes.InvalidBinaryFile:
+                    return "\nInvalid text file.\nRe-run program and provide a path to a valid binary text file.";
+                case ErrorCodes.NotCompleteByteFile:
+                    return "\nInvalid text file.  Binary units must be in bytes, or mutliples of 8.\nRe-run program and enter a path to a valid binary file in byte format.";
+                case ErrorCodes.InvalidOctalFile:
+                    return "\nInvalid text file.\nRe-run program and provide a path to a valid octal text file.";
+                case ErrorCodes.NotCompleteOctalFile:
+                    return "\nInvalid text file.  Octal units must be in multiples of 3.\nRe-run program and enter a path to a valid octal text file with units in multiples of 3.";
+                case ErrorCodes.InvalidHexFile:
+                    return "\nInvalid text file.\nRe-run program and provide a path to a valid hexadecimal text file.";
+                case ErrorCodes.NotCompleteHexFile:
+                    return "\nInvalid text file.  Hexadecimal units must be in multiples of 2.\nRe-run program and enter a path to a valid hexadecimal text file with units in multiples of 2.";
+                default:
+                    return "\nUnknown error.";
+            }
         }
     }
 }

@@ -1,0 +1,1 @@
+Invalid text file.  File has no base type to identify file type:  b, o, or h.
