@@ -24,17 +24,7 @@ namespace Champ_Proj5_ASCIITranslator
                     Console.WriteLine("\nEnter a binary message for ASCII translation.\n");
                     string binString = Console.ReadLine().ToLower();
 
-                    ValidateBinData(binString);
-
-                    StringBuilder userMessage = new StringBuilder();
-                    for (int i = 0; i < binString.Length; i += 8)
-                    {
-                        string userBinaryString = binString.Substring(i, 8);
-                        byte binaryInput = Convert.ToByte(userBinaryString, 2);
-                        char byteResult = Convert.ToChar(binaryInput);
-                        userMessage.Append(byteResult);
-                    }
-
+                    string userMessage = BinTranslator.Translate(binString);
                     Console.WriteLine("\nYour binary message translated to ASCII is:\n\n{0}", userMessage);
                     Console.WriteLine("\nPress any key to exit.");
                     Console.ReadLine();
@@ -96,17 +86,7 @@ namespace Champ_Proj5_ASCIITranslator
 
                     if (type == 'b')
                     {
-                        ValidateBinData(data);
-
-                        StringBuilder userMessage = new StringBuilder();
-                        for (int i = 0; i < data.Length; i += 8)
-                        {
-                            string userBinaryString = data.Substring(i, 8);
-                            byte binaryInput = Convert.ToByte(userBinaryString, 2);
-                            char byteResult = Convert.ToChar(binaryInput);
-                            userMessage.Append(byteResult);
-                        }
-
+                        string userMessage = BinTranslator.Translate(data);
                         Console.WriteLine("\nYour binary message translated to ASCII is:\n\n{0}", userMessage);
                         Console.WriteLine("\nPress any key to exit.");
                         Console.ReadLine();
@@ -150,7 +130,7 @@ namespace Champ_Proj5_ASCIITranslator
 
                     else
                     {
-                        Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidFileType));
+                        Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidFileType));
                         Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
@@ -158,7 +138,7 @@ namespace Champ_Proj5_ASCIITranslator
 
                 else
                 {
-                    Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidInputParameter));
+                    Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidInputParameter));
                     Thread.Sleep(3200);
                     Environment.Exit(0);
                 }
@@ -166,20 +146,10 @@ namespace Champ_Proj5_ASCIITranslator
 
             else
             {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidNumParameters));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidNumParameters));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
             }
-        }
-
-        private static bool BinaryCheck(string userInput)
-        {
-            foreach (char c in userInput)
-            {
-                if (c != '0' && c != '1')
-                    return false;
-            }
-            return true;
         }
 
         private static bool OctalCheck(string userInput)
@@ -200,20 +170,6 @@ namespace Champ_Proj5_ASCIITranslator
                     return false;
             }
             return true;
-        }
-
-        private static int ValidByteCheck(string binString)
-        {
-            int bitCount = 0;
-            int mod;
-
-            foreach (char c in binString)
-            {
-                bitCount += 1;
-            }
-
-            mod = bitCount % 8;
-            return mod;
         }
 
         private static int ValidOctCheck(string octString)
@@ -257,7 +213,7 @@ namespace Champ_Proj5_ASCIITranslator
                     }
                     else
                     {
-                        Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.BlankFile));
+                        Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.BlankFile));
                         Thread.Sleep(3200);
                         Environment.Exit(0);
                     }
@@ -271,7 +227,7 @@ namespace Champ_Proj5_ASCIITranslator
         {
             if (dataType != "bin" && dataType != "oct" && dataType != "hex")
             {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidDataType));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidDataType));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
@@ -285,27 +241,7 @@ namespace Champ_Proj5_ASCIITranslator
             data = "";
             if (!ReadFile(userPath, ref type, ref data))
             {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.NoFile));
-                Thread.Sleep(3200);
-                Environment.Exit(0);
-                return false;
-            }
-            return true;
-        }
-
-        private static bool ValidateBinData(string data)
-        {
-            if (!BinaryCheck(data))
-            {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidBinary));
-                Thread.Sleep(3200);
-                Environment.Exit(0);
-                return false;
-            }
-
-            else if (ValidByteCheck(data) != 0)
-            {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.NotCompleteByte));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.NoFile));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
@@ -317,7 +253,7 @@ namespace Champ_Proj5_ASCIITranslator
         {
             if (!OctalCheck(data))
             {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidOctal));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidOctal));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
@@ -325,7 +261,7 @@ namespace Champ_Proj5_ASCIITranslator
 
             else if (ValidOctCheck(data) != 0)
             {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.NotCompleteOctal));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.NotCompleteOctal));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
@@ -338,7 +274,7 @@ namespace Champ_Proj5_ASCIITranslator
             if (!HexadecimalCheck(data))
             {
                 
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.InvalidHex));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidHex));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
@@ -346,7 +282,7 @@ namespace Champ_Proj5_ASCIITranslator
 
             else if (ValidHexCheck(data) != 0)
             {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.errorCodes.NotCompleteHex));
+                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.NotCompleteHex));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
