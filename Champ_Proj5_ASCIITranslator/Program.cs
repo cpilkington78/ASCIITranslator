@@ -55,7 +55,7 @@ namespace Champ_Proj5_ASCIITranslator
 
             else if (args.Length == 2)
             {
-                string userArgs = args[0].ToLower().Trim();
+                string userArgs = args[0].ToLower();
                 string userPath = args[1];
 
                 if (userArgs == "/f")
