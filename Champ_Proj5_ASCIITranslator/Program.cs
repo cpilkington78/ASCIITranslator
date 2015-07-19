@@ -35,20 +35,10 @@ namespace Champ_Proj5_ASCIITranslator
                     Console.WriteLine("\nEnter an octal message for ASCII translation.\n");
                     string octString = Console.ReadLine().ToLower();
 
-                    ValidateOctData(octString);
-                    
-                        StringBuilder userMessage = new StringBuilder();
-                        for (int i = 0; i < octString.Length; i += 3)
-                        {
-                            string userOctalString = octString.Substring(i, 3);
-                            int octalInput = Convert.ToInt32(userOctalString, 8);
-                            char octalResult = Convert.ToChar(octalInput);
-                            userMessage.Append(octalResult);
-                        }
-
-                        Console.WriteLine("\nYour octal message translated to ASCII is:\n\n{0}", userMessage);
-                        Console.WriteLine("\nPress any key to exit.");
-                        Console.ReadLine();
+                    string userMessage = OctTranslator.Translate(octString);
+                    Console.WriteLine("\nYour octal message translated to ASCII is:\n\n{0}", userMessage);
+                    Console.WriteLine("\nPress any key to exit.");
+                    Console.ReadLine();
                 }
 
                 else if (dataType == "hex")
@@ -56,17 +46,7 @@ namespace Champ_Proj5_ASCIITranslator
                     Console.WriteLine("\nEnter a hexadecimal message for ASCII translation.\n");
                     string hexString = Console.ReadLine().ToLower();
 
-                    ValidateHexData(hexString);
-
-                    StringBuilder userMessage = new StringBuilder();
-                    for (int i = 0; i < hexString.Length; i += 2)
-                    {
-                        string userHexString = hexString.Substring(i, 2);
-                        int hexInput = Convert.ToInt32(userHexString, 16);
-                        char hexResult = Convert.ToChar(hexInput);
-                        userMessage.Append(hexResult);
-                    }
-
+                    string userMessage = HexTranslator.Translate(hexString);
                     Console.WriteLine("\nYour hexadecimal message translated to ASCII is:\n\n{0}", userMessage);
                     Console.WriteLine("\nPress any key to exit.");
                     Console.ReadLine();
@@ -94,17 +74,7 @@ namespace Champ_Proj5_ASCIITranslator
 
                     else if (type == 'o')
                     {
-                        ValidateOctData(data);
-
-                        StringBuilder userMessage = new StringBuilder();
-                        for (int i = 0; i < data.Length; i += 3)
-                        {
-                            string userOctalString = data.Substring(i, 3);
-                            int octalInput = Convert.ToInt32(userOctalString, 8);
-                            char octalResult = Convert.ToChar(octalInput);
-                            userMessage.Append(octalResult);
-                        }
-
+                        string userMessage = OctTranslator.Translate(data);
                         Console.WriteLine("\nYour octal message translated to ASCII is:\n\n{0}", userMessage);
                         Console.WriteLine("\nPress any key to exit.");
                         Console.ReadLine();
@@ -112,17 +82,7 @@ namespace Champ_Proj5_ASCIITranslator
 
                     else if (type == 'h')
                     {
-                        ValidateHexData(data);
-                            
-                        StringBuilder userMessage = new StringBuilder();
-                        for (int i = 0; i < data.Length; i += 2)
-                        {
-                            string userHexString = data.Substring(i, 2);
-                            int hexInput = Convert.ToInt32(userHexString, 16);
-                            char hexResult = Convert.ToChar(hexInput);
-                            userMessage.Append(hexResult);
-                        }
-
+                        string userMessage = HexTranslator.Translate(data);
                         Console.WriteLine("\nYour hexadecimal message translated to ASCII is:\n\n{0}", userMessage);
                         Console.WriteLine("\nPress any key to exit.");
                         Console.ReadLine();
@@ -150,54 +110,6 @@ namespace Champ_Proj5_ASCIITranslator
                 Thread.Sleep(3200);
                 Environment.Exit(0);
             }
-        }
-
-        private static bool OctalCheck(string userInput)
-        {
-            foreach (char c in userInput)
-            {
-                if (c < '0' || c > '7')
-                    return false;
-            }
-            return true;
-        }
-
-        private static bool HexadecimalCheck(string userInput)
-        {
-            foreach (char c in userInput)
-            {
-                if ((c < '0' || c > '9') && (c < 'a' || c > 'f') && (c < 'A' || c > 'F'))
-                    return false;
-            }
-            return true;
-        }
-
-        private static int ValidOctCheck(string octString)
-        {
-            int octCount = 0;
-            int mod;
-
-            foreach (char c in octString)
-            {
-                octCount += 1;
-            }
-
-            mod = octCount % 3;
-            return mod;
-        }
-
-        private static int ValidHexCheck(string hexString)
-        {
-            int hexCount = 0;
-            int mod;
-
-            foreach (char c in hexString)
-            {
-                hexCount += 1;
-            }
-
-            mod = hexCount % 2;
-            return mod;
         }
 
         private static bool ReadFile(string strFile, ref char type, ref string data)
@@ -242,47 +154,6 @@ namespace Champ_Proj5_ASCIITranslator
             if (!ReadFile(userPath, ref type, ref data))
             {
                 Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.NoFile));
-                Thread.Sleep(3200);
-                Environment.Exit(0);
-                return false;
-            }
-            return true;
-        }
-
-        private static bool ValidateOctData(string data)
-        {
-            if (!OctalCheck(data))
-            {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidOctal));
-                Thread.Sleep(3200);
-                Environment.Exit(0);
-                return false;
-            }
-
-            else if (ValidOctCheck(data) != 0)
-            {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.NotCompleteOctal));
-                Thread.Sleep(3200);
-                Environment.Exit(0);
-                return false;
-            }
-            return true;
-        }
-
-        private static bool ValidateHexData(string data)
-        {
-            if (!HexadecimalCheck(data))
-            {
-                
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.InvalidHex));
-                Thread.Sleep(3200);
-                Environment.Exit(0);
-                return false;
-            }
-
-            else if (ValidHexCheck(data) != 0)
-            {
-                Console.WriteLine(ErrorCodes.GetErrorMessage(ErrorCodes.Codes.NotCompleteHex));
                 Thread.Sleep(3200);
                 Environment.Exit(0);
                 return false;
