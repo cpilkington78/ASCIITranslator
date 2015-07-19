@@ -22,7 +22,7 @@ namespace Champ_Proj5_ASCIITranslator
                 if (dataType == "bin")
                 {
                     Console.WriteLine("\nEnter a binary message for ASCII translation.\n");
-                    string binString = Console.ReadLine().ToLower();
+                    string binString = Console.ReadLine().ToLower().Trim();
 
                     string userMessage = BinTranslator.Translate(binString);
                     Console.WriteLine("\nYour binary message translated to ASCII is:\n\n{0}", userMessage);
@@ -33,7 +33,7 @@ namespace Champ_Proj5_ASCIITranslator
                 else if (dataType == "oct")
                 {
                     Console.WriteLine("\nEnter an octal message for ASCII translation.\n");
-                    string octString = Console.ReadLine().ToLower();
+                    string octString = Console.ReadLine().ToLower().Trim();
 
                     string userMessage = OctTranslator.Translate(octString);
                     Console.WriteLine("\nYour octal message translated to ASCII is:\n\n{0}", userMessage);
@@ -44,7 +44,7 @@ namespace Champ_Proj5_ASCIITranslator
                 else if (dataType == "hex")
                 {
                     Console.WriteLine("\nEnter a hexadecimal message for ASCII translation.\n");
-                    string hexString = Console.ReadLine().ToLower();
+                    string hexString = Console.ReadLine().ToLower().Trim();
 
                     string userMessage = HexTranslator.Translate(hexString);
                     Console.WriteLine("\nYour hexadecimal message translated to ASCII is:\n\n{0}", userMessage);
@@ -55,7 +55,7 @@ namespace Champ_Proj5_ASCIITranslator
 
             else if (args.Length == 2)
             {
-                string userArgs = args[0].ToLower();
+                string userArgs = args[0].ToLower().Trim();
                 string userPath = args[1];
 
                 if (userArgs == "/f")
